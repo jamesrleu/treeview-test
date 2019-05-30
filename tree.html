@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Bootstrap Tree View</title>
+    <link href="./bower_components/bootstrap/dist/css/bootstrap.css" rel="stylesheet">
+    <!-- <link href="./css/bootstrap-treeview.css" rel="stylesheet"> -->
+  </head>
+  <body>
+        <h2>Checkable Tree</h2>
+            <div class="col-sm-6">
+              <button type="button" class="btn btn-success submit-node" id="btn-submit-node">Submit Node</button>
+            </div>
+        <div class="col-sm-4">
+          <h2>Tree</h2>
+          <div id="treeview-checkable" class=""></div>
+        </div>
+        </div>
+      </div>
+      <br/>
+      <br/>
+      <br/>
+      <br/>
+    </div>
+    <script src="./bower_components/jquery/dist/jquery.js"></script>
+  	<script src="./js/bootstrap-treeview.js"></script>
+  	<script type="text/javascript">
+
+        var defaultData = [
+          {
+            text: 'Parent 1',
+            href: '#parent1',
+            tags: ['4'],
+            nodes: [
+              {
+                text: 'Child 1',
+                href: '#child1',
+                tags: ['2'],
+                nodes: [
+                  {
+                    text: 'Grandchild 1',
+                    href: '#grandchild1',
+                    tags: ['0']
+                  },
+                  {
+                    text: 'Grandchild 2',
+                    href: '#grandchild2',
+                    tags: ['0']
+                  }
+                ]
+              },
+              {
+                text: 'Child 2',
+                href: '#child2',
+                tags: ['0']
+              }
+            ]
+          },
+          {
+            text: 'Parent 2',
+            href: '#parent2',
+            tags: ['0']
+          },
+          {
+            text: 'Parent 3',
+            href: '#parent3',
+             tags: ['0']
+          },
+          {
+            text: 'Parent 4',
+            href: '#parent4',
+            tags: ['0']
+          },
+          {
+            text: 'Parent 5',
+            href: '#parent5'  ,
+            tags: ['0']
+          }
+        ];
+	var mydata = [];
+
+        var $checkableTree = $('#treeview-checkable').treeview({
+          data: defaultData,
+          showIcon: false,
+          showCheckbox: true,
+          onNodeChecked: function(event, node) {
+            $('#checkable-output').prepend('<p>' + node.text + ' was checked</p>');
+	    mydata[node.href] = 1;
+	    // mark data checked
+          },
+          onNodeUnchecked: function (event, node) {
+            $('#checkable-output').prepend('<p>' + node.text + ' was unchecked</p>');
+	    delete(mydata[node.href]);
+	    // unmark data checked
+          }
+        });
+
+        var findCheckableNodess = function() {
+          return $checkableTree.treeview('search', [ $('#input-check-node').val(), { ignoreCase: false, exactMatch: false } ]);
+        };
+        var checkableNodes = findCheckableNodess();
+
+        // Check/uncheck/toggle nodes
+        $('#input-check-node').on('keyup', function (e) {
+          checkableNodes = findCheckableNodess();
+          $('.check-node').prop('disabled', !(checkableNodes.length >= 1));
+        });
+
+        $('#btn-submit-node').on('click', function (e) {
+		console.log(JSON.stringify(mydata,null,4));
+		/// sumit data here
+
+        });
+
+  	</script>
+  </body>
+</html>
